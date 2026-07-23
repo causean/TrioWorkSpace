@@ -1,0 +1,19 @@
+name: Renew Match Certificate
+
+   on:
+     workflow_dispatch:
+
+   jobs:
+     renew:
+       runs-on: macos-latest
+       steps:
+         - uses: actions/checkout@v7
+         - name: Set up Ruby
+           uses: ruby/setup-ruby@v1
+           with:
+             bundler-cache: true
+         - name: Renew certificate
+           env:
+             MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+             GH_PAT: ${{ secrets.GH_PAT }}
+           run: bundle exec fastlane match appstore --force
